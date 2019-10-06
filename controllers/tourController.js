@@ -6,6 +6,16 @@ const tours = JSON.parse(
 /*
  * 2) ROUTE HANDLERS
  */
+
+exports.checkIdValidation = (req, res, next, id) => {
+  if (id * 1 > tours.length - 1) {
+    return res.status(404).json({
+      status: "error",
+      massege: "Invalid id"
+    });
+  }
+  next();
+};
 exports.getAllTours = (req, res) => {
   res.status(200).json({
     status: "success",
@@ -17,22 +27,14 @@ exports.getAllTours = (req, res) => {
 };
 exports.getTour = (req, res) => {
   const { id } = req.params;
+  const tour = tours.find(el => el.id === id * 1);
 
-  if (id * 1 > tours.length - 1) {
-    res.status(404).json({
-      status: "error",
-      massege: "Invalid id"
-    });
-  } else {
-    const tour = tours.find(el => el.id === id * 1);
-
-    res.status(200).json({
-      status: "success",
-      data: {
-        tour
-      }
-    });
-  }
+  res.status(200).json({
+    status: "success",
+    data: {
+      tour
+    }
+  });
 };
 exports.createTour = (req, res) => {
   const newId = tours[tours.length - 1].id + 1;
@@ -63,33 +65,21 @@ exports.createTour = (req, res) => {
 
 exports.updateTour = (req, res) => {
   const id = req.params.id * 1;
-  if (id > tours.length) {
-    res.status(404).json({
-      status: "error",
-      message: "Invalid ID"
-    });
-  } else {
-    res.status(200).json({
-      status: "success",
-      data: {
-        tour: "<Tour here..>"
-      }
-    });
-  }
+
+  res.status(200).json({
+    status: "success",
+    data: {
+      tour: "<Tour here..>"
+    }
+  });
 };
 exports.deleteTour = (req, res) => {
   const id = req.params.id * 1;
-  if (id > tours.length) {
-    res.status(404).json({
-      status: "error",
-      message: "Invalid ID"
-    });
-  } else {
-    res.status(200).json({
-      status: "success",
-      data: {
-        tour: "delete tour"
-      }
-    });
-  }
+
+  res.status(200).json({
+    status: "success",
+    data: {
+      tour: "delete tour"
+    }
+  });
 };
